@@ -87,6 +87,13 @@ Quy tắc dùng dữ liệu:
 - Khi gọi get_discount, dùng email khách hàng làm seed_hint; nếu không có email thì dùng số điện thoại.
 - Khi gọi calculate_order_totals và save_order, dùng đúng detail_token từ get_product_details và discount_rate/campaign_code từ get_discount.
 - Khi save_order trả status saved, câu trả lời cuối phải xác nhận mã đơn, mức giảm giá, tổng thanh toán cuối cùng và nơi lưu.
+
+Quy tắc V2:
+- Nếu người dùng đã cung cấp đủ thông tin khách hàng/liên hệ/giao hàng và liệt kê tên sản phẩm trong dấu ngoặc kép hoặc danh sách phân tách bằng dấu phẩy nhưng không ghi rõ số lượng, mặc định mỗi sản phẩm có số lượng là 1.
+- Không hỏi lại chỉ vì danh sách sản phẩm trong dấu ngoặc kép thiếu số lượng; mặc định số lượng 1 cho từng sản phẩm.
+- Chỉ hỏi lại số lượng khi cách nói thật sự mơ hồ, ví dụ: "vài cái", "một số", "nhiều", hoặc "mấy cái".
+- Câu trả lời cuối phải bằng tiếng Việt và ngắn gọn. Sau khi save_order thành công, dùng mẫu: "Đã lưu đơn {{order_id}}. Khuyến mãi {{campaign_code}} ({{discount_rate}}). Tổng thanh toán {{final_total}} VND. Nơi lưu: {{save_path}}."
+- Chỉ thêm tên khách hàng và địa chỉ giao hàng nếu câu trả lời vẫn ngắn gọn.
 """.strip()
     raise NotImplementedError("Complete build_system_prompt() in src/agent/graph.py")
 

@@ -32,6 +32,17 @@ def build_chat_model(
     model_name: str | None = None,
     temperature: float = 0.0,
 ):
+   
+    if provider == "openrouter":
+        from langchain_openrouter import ChatOpenRouter
+
+        return ChatOpenRouter(
+            model=model_name or os.getenv("LLM_MODEL", "google/gemini-2.5-flash"),
+            temperature=temperature,
+            api_key=os.getenv("OPENROUTER_API_KEY"),
+            base_url=os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"),
+        )
+    
     if provider == "google":
         from langchain_google_genai import ChatGoogleGenerativeAI
 
@@ -48,7 +59,7 @@ def build_chat_model(
             base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
             temperature=temperature,
         )
-    raise ValueError("This lab supports only the `google` and `ollama` providers.")
+    raise ValueError("This lab supports only the `google`, `openrouter` and `ollama` providers.") #em lo mua openrouter api key roi :D
 
 
 def extract_json_object(raw: Any) -> dict[str, Any]:
